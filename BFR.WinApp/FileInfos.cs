@@ -44,9 +44,19 @@ namespace BFR.WinApp
         {
             string dir = fullname.Remove(fullname.LastIndexOf("\\") + 1);
             string name = fullname.Replace(dir, "");
-            string ext = name.Substring(name.LastIndexOf("."));
-            string safe = name.Replace(ext, "");
-
+            string ext;
+            string safe;
+            if (name.LastIndexOf(".") == -1)
+            {
+                ext = "";
+                safe = name;
+            }
+            else
+            {
+                ext = name.Substring(name.LastIndexOf("."));
+                safe = name.Replace(ext, "");
+            }
+          
             this.Dir = dir;
             this.FullName = fullname;
             this.Name = name;
@@ -65,8 +75,18 @@ namespace BFR.WinApp
             {
                 dir += "\\";
             }
-            string ext = name.Substring(name.LastIndexOf("."));
-            string safe = name.Replace(ext, "");
+            string ext;
+            string safe;
+            if (name.LastIndexOf(".") == -1)
+            {
+                ext = "";
+                safe = name;
+            }
+            else
+            {
+                ext = name.Substring(name.LastIndexOf("."));
+                safe = name.Replace(ext, "");
+            }
 
             this.Dir = dir;
             this.FullName = dir+name;

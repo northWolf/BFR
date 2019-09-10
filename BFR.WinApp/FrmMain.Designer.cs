@@ -34,6 +34,7 @@
             this.lblVersion = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lnklblLastedVersion = new System.Windows.Forms.LinkLabel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.FilesList = new System.Windows.Forms.ListView();
             this.No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -67,7 +68,8 @@
             this.tbReplacedText = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
-            this.lnklblLastedVersion = new System.Windows.Forms.LinkLabel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnSelectFolders = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -130,6 +132,18 @@
             this.progressBar1.Size = new System.Drawing.Size(100, 16);
             this.progressBar1.TabIndex = 12;
             // 
+            // lnklblLastedVersion
+            // 
+            this.lnklblLastedVersion.AutoSize = true;
+            this.lnklblLastedVersion.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lnklblLastedVersion.Location = new System.Drawing.Point(462, 4);
+            this.lnklblLastedVersion.Name = "lnklblLastedVersion";
+            this.lnklblLastedVersion.Size = new System.Drawing.Size(57, 12);
+            this.lnklblLastedVersion.TabIndex = 10;
+            this.lnklblLastedVersion.TabStop = true;
+            this.lnklblLastedVersion.Text = "最新版本";
+            this.lnklblLastedVersion.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnklblLastedVersion_LinkClicked);
+            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.FilesList);
@@ -171,6 +185,8 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btnSelectFolders);
+            this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.groupBox4);
             this.panel2.Controls.Add(this.groupBox3);
             this.panel2.Controls.Add(this.cbBak);
@@ -189,7 +205,7 @@
             // 
             this.groupBox4.Controls.Add(this.rbtnLower);
             this.groupBox4.Controls.Add(this.rbtnUpper);
-            this.groupBox4.Location = new System.Drawing.Point(8, 231);
+            this.groupBox4.Location = new System.Drawing.Point(8, 252);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(224, 47);
             this.groupBox4.TabIndex = 7;
@@ -224,7 +240,7 @@
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.dtpCreateTime);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(8, 286);
+            this.groupBox3.Location = new System.Drawing.Point(8, 306);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(224, 70);
             this.groupBox3.TabIndex = 7;
@@ -282,7 +298,7 @@
             // cbBak
             // 
             this.cbBak.AutoSize = true;
-            this.cbBak.Location = new System.Drawing.Point(153, 8);
+            this.cbBak.Location = new System.Drawing.Point(152, 18);
             this.cbBak.Name = "cbBak";
             this.cbBak.Size = new System.Drawing.Size(84, 16);
             this.cbBak.TabIndex = 6;
@@ -291,7 +307,7 @@
             // 
             // btnSelectFiles
             // 
-            this.btnSelectFiles.Location = new System.Drawing.Point(71, 4);
+            this.btnSelectFiles.Location = new System.Drawing.Point(71, 2);
             this.btnSelectFiles.Name = "btnSelectFiles";
             this.btnSelectFiles.Size = new System.Drawing.Size(75, 23);
             this.btnSelectFiles.TabIndex = 5;
@@ -301,7 +317,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 9);
+            this.label1.Location = new System.Drawing.Point(6, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 3;
@@ -317,7 +333,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.tbReName);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(8, 115);
+            this.groupBox2.Location = new System.Drawing.Point(8, 134);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(224, 110);
             this.groupBox2.TabIndex = 2;
@@ -414,7 +430,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tbReplacedText);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(8, 29);
+            this.groupBox1.Location = new System.Drawing.Point(8, 49);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(224, 80);
             this.groupBox1.TabIndex = 2;
@@ -455,24 +471,31 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(8, 364);
+            this.btnStart.Location = new System.Drawing.Point(8, 383);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(224, 51);
+            this.btnStart.Size = new System.Drawing.Size(224, 32);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "开始";
             this.btnStart.UseVisualStyleBackColor = true;
             // 
-            // lnklblLastedVersion
+            // label8
             // 
-            this.lnklblLastedVersion.AutoSize = true;
-            this.lnklblLastedVersion.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lnklblLastedVersion.Location = new System.Drawing.Point(462, 4);
-            this.lnklblLastedVersion.Name = "lnklblLastedVersion";
-            this.lnklblLastedVersion.Size = new System.Drawing.Size(57, 12);
-            this.lnklblLastedVersion.TabIndex = 10;
-            this.lnklblLastedVersion.TabStop = true;
-            this.lnklblLastedVersion.Text = "最新版本";
-            this.lnklblLastedVersion.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnklblLastedVersion_LinkClicked);
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 30);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(71, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "选择文件夹:";
+            // 
+            // btnSelectFolders
+            // 
+            this.btnSelectFolders.Location = new System.Drawing.Point(71, 25);
+            this.btnSelectFolders.Name = "btnSelectFolders";
+            this.btnSelectFolders.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectFolders.TabIndex = 9;
+            this.btnSelectFolders.Text = "浏览";
+            this.btnSelectFolders.UseVisualStyleBackColor = true;
+            this.btnSelectFolders.Click += new System.EventHandler(this.btnSelectFolders_Click);
             // 
             // FrmMain
             // 
@@ -546,7 +569,8 @@
         private System.Windows.Forms.DateTimePicker dtpModifiedTime;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.LinkLabel lnklblLastedVersion;
-
+        private System.Windows.Forms.Button btnSelectFolders;
+        private System.Windows.Forms.Label label8;
     }
 }
 

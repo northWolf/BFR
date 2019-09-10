@@ -18,6 +18,10 @@ namespace BFR.WinApp
         /// </summary>
         List<FileInfos> _files;
         /// <summary>
+        /// 文件全名称列表
+        /// </summary>
+        List<string> _filesFullName;
+        /// <summary>
         /// 根目录
         /// </summary>
         string _dir;
@@ -32,7 +36,7 @@ namespace BFR.WinApp
         public FrmMain()
         {
             InitializeComponent();
-            this.btnStart.Click+=btnStart_Click;
+            this.btnStart.Click += btnStart_Click;
             this.btnSelectFiles.Click += btnSelectFiles_Click;
             this.dtpCreateTime.ValueChanged += new System.EventHandler(this.DateTimePicker_ValueChanged);
             this.tbCreateTime.Leave += new System.EventHandler(this.TextBoxTime_Leave);
@@ -67,11 +71,64 @@ namespace BFR.WinApp
             if (result == DialogResult.Yes || result == DialogResult.OK)
             {
                 _dir = GetFileDir(dialog.FileName);
-                _files = new List<FileInfos>();
+
+                if (_files == null)
+                {
+                    _files = new List<FileInfos>();
+                }
+
+                if (_filesFullName == null)
+                {
+                    _filesFullName = new List<string>();
+                }
+
 
                 foreach (var item in dialog.FileNames)
                 {
-                    _files.Add(new FileInfos(item));
+                    if (!_filesFullName.Contains(item))
+                    {
+                        _filesFullName.Add(item);
+                        _files.Add(new FileInfos(item));
+                    }
+                }
+
+                Msg("已选择" + _files.Count + "个文件");
+                FilesListInit();
+            }
+            else
+            {
+                Msg("未选择文件");
+            }
+        }
+
+        private void btnSelectFolders_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _dir = dialog.SelectedPath;
+                DirectoryInfo _dirInfo = new DirectoryInfo(_dir);
+                FileInfo[] fileInfos = _dirInfo.GetFiles("*", SearchOption.AllDirectories);
+
+                if (_files == null)
+                {
+                    _files = new List<FileInfos>();
+                }
+
+                if (_filesFullName == null)
+                {
+                    _filesFullName = new List<string>();
+                }
+
+                foreach (var item in fileInfos)
+                {
+                    if (!_filesFullName.Contains(item.FullName))
+                    {
+                        _filesFullName.Add(item.FullName);
+                        _files.Add(new FileInfos(item.FullName));
+                    }
                 }
 
                 Msg("已选择" + _files.Count + "个文件");
@@ -127,7 +184,7 @@ namespace BFR.WinApp
                     {
                         Msg("备份中:" + progress + "/" + _files.Count);
                         UpdateProgressBar(progress, 1, _files.Count);
-                        File.Copy(_dir + file.Name, tmpPath + file.Name,true);
+                        File.Copy(Path.Combine(_dir, file.Name), Path.Combine(tmpPath, file.Name), true);
                         progress++;
                     }
                 }
@@ -144,7 +201,7 @@ namespace BFR.WinApp
                 {
                     type = 2;
                     counter = (int)this.nudStart.Value;
-                    var max = Math.Pow(10, (double) this.nudBit.Value) - 1;
+                    var max = Math.Pow(10, (double)this.nudBit.Value) - 1;
                     if (this._files.Count > (max - (int)this.nudStart.Value))
                     {
                         Msg("序号位数最大值小于所选文件数,请更正序号位数");
@@ -187,10 +244,10 @@ namespace BFR.WinApp
                             else if (extLower)
                             {
                                 _ext = _ext.ToLower();
-                            } 
+                            }
                         }
 
-                        FileInfos _info = new FileInfos();                        
+                        FileInfos _info = new FileInfos();
                         _info.Dir = info.Dir;
                         _info.Ext = _ext;
                         _info.SafeName = tmp;
@@ -202,7 +259,7 @@ namespace BFR.WinApp
                         if (_createTime != null)
                         {
                             file.CreationTime = (DateTime)_createTime;
-                            file.LastAccessTime = (DateTime)_createTime; 
+                            file.LastAccessTime = (DateTime)_createTime;
                         }
                         if (_modifiedTime != null)
                         {
@@ -242,7 +299,7 @@ namespace BFR.WinApp
         private void lnkAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.lnkAbout.Links[0].LinkData = "https://github.com/seayxu/BFR";
-            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());    
+            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
         }
 
         /// <summary>
@@ -318,7 +375,7 @@ namespace BFR.WinApp
         {
             RadioButton radio = (RadioButton)sender;
             bool check = radio.Checked;
-            if (radio.Name==this.rbtnLower.Name)
+            if (radio.Name == this.rbtnLower.Name)
             {
                 Invokes.SetRadioButtonChecked(this.rbtnLower, !check);
                 check = Invokes.GetRadioButtonChecked(this.rbtnUpper);
@@ -367,7 +424,7 @@ namespace BFR.WinApp
                 {
                     return null;
                 }
-                string tmp = filename.Remove(filename.LastIndexOf("\\")+1);
+                string tmp = filename.Remove(filename.LastIndexOf("\\") + 1);
                 return tmp;
             }
             catch (Exception ex)
@@ -382,12 +439,12 @@ namespace BFR.WinApp
         /// <param name="num"></param>
         /// <param name="bit"></param>
         /// <returns></returns>
-        public string GetSerial(int num,int bit)
+        public string GetSerial(int num, int bit)
         {
             string str = null;
             if (num.ToString().Length >= bit)
             {
-                return num.ToString().Substring(0,bit);
+                return num.ToString().Substring(0, bit);
             }
 
             int count = bit - num.ToString().Length;
@@ -417,7 +474,7 @@ namespace BFR.WinApp
         /// <param name="value"></param>
         /// <param name="min"></param>
         /// <param name="max"></param>
-        public void UpdateProgressBar(int value,int min,int max)
+        public void UpdateProgressBar(int value, int min, int max)
         {
             Invokes.SetProgressBarMaxValue(this.progressBar1, max);
             Invokes.SetProgressBarMinValue(this.progressBar1, min);
@@ -438,6 +495,6 @@ namespace BFR.WinApp
             this.lnklblLastedVersion.Links[0].LinkData = "https://github.com/seayxu/BFR/releases/latest";
             System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
         }
-        
+
     }
 }
